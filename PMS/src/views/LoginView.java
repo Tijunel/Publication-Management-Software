@@ -22,6 +22,7 @@ public class LoginView extends View {
 	private JPanel contentPane;
 	private JTextField txtUsername;
 	private JTextField txtPassword;
+	private JButton btnLogin;
 
 	/**
 	 * Launch the application.
@@ -75,7 +76,7 @@ public class LoginView extends View {
 		lblPms.setBounds(183, 13, 56, 16);
 		contentPane.add(lblPms);
 		
-		JButton btnLogin = new JButton("Login");
+		btnLogin = new JButton("Login");
 		btnLogin.setBounds(204, 148, 97, 25);
 		contentPane.add(btnLogin);
 		
