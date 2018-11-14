@@ -15,6 +15,10 @@ import javax.swing.JButton;
 
 public class LoginView extends View {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUsername;
 	private JTextField txtPassword;
