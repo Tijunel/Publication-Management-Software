@@ -160,29 +160,6 @@ public class DatabaseHelper
 		DatabaseHelper dbh = new DatabaseHelper();
 		dbh.setupDatabase();
 		dbh.createTable("documents");
-//		dbh.removeDocument(7);
-//		dbh.addDocument("Inkheart", "Cornelia Funke", 12345678, "none yet");
-//		dbh.removeDocument(2);
-//		dbh.addDocument("Eragon", "Christopher Paolini", 87654321, "none yet");
-		System.out.println("Id is: " + dbh.search_document_by_id(8));
-		System.out.println("Id is: " + dbh.search_document_by_id(9));
-		System.out.println("Id is: " + dbh.search_document_by_id(1));
-		results = dbh.search_document_by_name("inkheart");
-		for(int i = 0; i < results.size(); i++) {
-			System.out.println(results.get(i));
-		}
-		System.out.println();
-		results = dbh.search_document_by_name("eragon");
-		for(int i = 0; i < results.size(); i++) {
-			System.out.println(results.get(i));
-		}
-		results = dbh.search_document_by_name("null");
-		for(int i = 0; i < results.size(); i++) {
-			System.out.println(results.get(i));
-		}
-		dbh.updateDocument(10, "Eldest", "Christopher Paolini", 7654321);
-		dbh.updatePromotionStatus(10, true);
-		dbh.updatePublicationStatus(10, true);
 		System.out.println("done");
 	}
 }
