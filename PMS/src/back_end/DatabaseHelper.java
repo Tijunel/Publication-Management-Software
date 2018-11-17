@@ -3,8 +3,9 @@ package back_end;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DatabaseHelper {
-
+public class DatabaseHelper
+{
+	
 	String url = "jdbc:mysql://localhost:3306";
 	String user = "root";
 	String password = "";

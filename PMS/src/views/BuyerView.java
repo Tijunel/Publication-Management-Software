@@ -9,31 +9,20 @@ import javax.swing.border.EmptyBorder;
 
 import buyer_pages.*;
 import front_end.*;
+import users.Buyer;
 
 public class BuyerView extends View {
 
 	private JPanel contentPane;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					BuyerView frame = new BuyerView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public BuyerView() {
+	public BuyerView(Client client, Buyer buyer) {
+		
+		this.client = client;
+		this.user = buyer;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 525, 400);
 		contentPane = new BuyerHomePage();
