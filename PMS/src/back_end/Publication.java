@@ -4,6 +4,7 @@ public class Publication //==Document
 {
 	private int IBSN;
 	private int id;
+	private int copies;
 	private String title;
 	private String author;
 	private String path;
@@ -21,6 +22,15 @@ public class Publication //==Document
 		this.setIBSN(IBSN);
 		this.setTitle(title);
 		this.setAuthor(author);
+	}
+	
+	public Publication(int id, int IBSN, String title, String author, int copies)
+	{
+		this.setId(id);
+		this.setIBSN(IBSN);
+		this.setTitle(title);
+		this.setAuthor(author);
+		this.setCopies(copies);
 	}
 
 	public int getIBSN() {
@@ -61,5 +71,13 @@ public class Publication //==Document
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getCopies() {
+		return copies;
+	}
+
+	public void setCopies(int copies) {
+		this.copies = copies;
 	}
 }

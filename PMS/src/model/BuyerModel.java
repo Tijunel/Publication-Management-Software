@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import back_end.Publication;
 import control.Control;
 import data.Account;
@@ -15,13 +17,23 @@ public class BuyerModel extends Model
 		super(control);
 	}
 	
-	public Publication search(String search)
+	public Publication search(String name)
 	{
-		//Insert SQL Code
-		return new Publication(1, "book", "me");
+		sql = "SELECT * FROM DOCUMENTS WHERE NAME=?";
+		try {
+			statement = con.prepareStatement(sql);
+			statement.setString(1, name);
+			rs = statement.executeQuery();
+			
+			if (rs.next())
+				return new Publication(rs.getInt("id"), rs.getInt("isbn"), rs.getString("name"), rs.getString("author"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
-	public void addToCart(Publication publication)
+	public void addToCart(Publication publication) //Does not require sql code
 	{
 		//Insert SQL Code
 	}

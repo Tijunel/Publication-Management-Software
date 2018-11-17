@@ -124,6 +124,62 @@ public class DatabaseHelper
 		}
 		return results;
 	}
+	
+	public ArrayList<Publication> getInventory() {
+		sql = "SELECT * FROM DOCUMENTS";
+		ArrayList<Publication> results = new ArrayList<Publication>();
+		try {
+			statement = con.prepareStatement(sql);
+			rs = statement.executeQuery();
+			
+			while (rs.next())
+				results.add(new Publication (
+						rs.getInt("id"), 
+						rs.getInt("isbn"), 
+						rs.getString("name"), 
+						rs.getString("author"), 
+						rs.getInt("copies")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
+	public ArrayList<Publication> getPromotions() {
+		sql = "SELECT * FROM DOCUMENTS WHERE PROMOTION=1";
+		ArrayList<Publication> results = new ArrayList<Publication>();
+		try {
+			statement = con.prepareStatement(sql);
+			rs = statement.executeQuery();
+			
+			while (rs.next())
+				results.add(new Publication (
+						rs.getInt("id"), 
+						rs.getInt("isbn"), 
+						rs.getString("name"), 
+						rs.getString("author"), 
+						rs.getInt("copies")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
+	public Publication search(String name)
+	{
+		sql = "SELECT * FROM DOCUMENTS WHERE NAME=?";
+		try {
+			statement = con.prepareStatement(sql);
+			statement.setString(1, name);
+			rs = statement.executeQuery();
+			
+			if (rs.next())
+				return new Publication(rs.getInt("id"), rs.getInt("isbn"), rs.getString("name"), rs.getString("author"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public void setupDatabase() {
 		try {
@@ -156,10 +212,16 @@ public class DatabaseHelper
 	}
 
 	public static void main(String[] args) {
-		ArrayList<Integer> results;
+		ArrayList<Publication> results;
 		DatabaseHelper dbh = new DatabaseHelper();
-		dbh.setupDatabase();
-		dbh.createTable("documents");
+		results = dbh.getPromotions();		
+		Inventory inv = new Inventory(results);
+		for (int i = 0; i < results.size(); i++) {
+			System.out.println(inv.getPublications().get(i).getId());
+			System.out.println(inv.getPublications().get(i).getTitle());
+			System.out.println(inv.getPublications().get(i).getCopies());
+			System.out.println();
+		}
 		System.out.println("done");
 	}
 }
