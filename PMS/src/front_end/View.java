@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public abstract class View extends JFrame {
-	
-	ArrayList <JPanel> pages;
+import users.User;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+public abstract class View extends JFrame 
+{
+	protected ArrayList <JPanel> pages;
+	protected Client client;
+	protected User user;
 }

@@ -1,17 +1,18 @@
 package views;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
+import data.Message;
+import front_end.Client;
 import front_end.View;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import javax.swing.JButton;
-
 
 public class LoginView extends View {
 
@@ -27,23 +28,14 @@ public class LoginView extends View {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginView frame = new LoginView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public LoginView() {
+	public LoginView(Client client) {
+		
+		this.client = client;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -80,6 +72,38 @@ public class LoginView extends View {
 		btnLogin.setBounds(204, 148, 97, 25);
 		contentPane.add(btnLogin);
 		
+		addListeners();
 		this.setVisible(true);
+	}
+	
+	private void addListeners() { 
+		Listener l = new Listener();
+		btnLogin.addActionListener(l);
+	}
+	
+	class Listener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			if(e.getSource() == btnLogin)
+			{
+				try {
+					System.out.println("Alive");
+					boolean loggedIn = client.login(new Message(txtUsername.getText()), new Message(txtPassword.getText()));
+					if(loggedIn)
+					{
+						//remove panel
+					}
+					else
+					{
+						//pop up
+					}
+				} catch (ClassNotFoundException | IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+		}
+		
 	}
 }
