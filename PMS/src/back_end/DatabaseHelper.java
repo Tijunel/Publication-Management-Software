@@ -3,6 +3,12 @@ package back_end;
 import java.sql.*;
 import java.util.ArrayList;
 
+import data.Account;
+import data.PaymentInformation;
+import data.ShoppingCart;
+import data.Subscription;
+import users.Buyer;
+
 public class DatabaseHelper
 {
 	
@@ -210,18 +216,85 @@ public class DatabaseHelper
 			e.printStackTrace();
 		}
 	}
+	
+	public void checkOut(ShoppingCart cart) {
+		sql = "UPDATE DOCUMENTS SET COPIES=? WHERE ID=?";
+		try {
+			statement = con.prepareStatement(sql);
+			for (int i = 0; i < cart.getCart().size(); i++) {
+				statement.setInt(1, cart.getCart().get(i).getCopies() - 1);
+				statement.setInt(2, cart.getCart().get(i).getId());
+				statement.executeUpdate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void subscribe(String username) {
+		sql = "UPDATE BUYER SET SUBSCRIPTION=1 WHERE USERNAME=?";
+		try {
+			statement = con.prepareStatement(sql);
+			statement.setString(1, username);
+			statement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void unsubscribe(String username) {
+		sql = "UPDATE BUYER SET SUBSCRIPTION=0 WHERE USERNAME=?";
+		try {
+			statement = con.prepareStatement(sql);
+			statement.setString(1, username);
+			statement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void addPaymentInfo(String username, PaymentInformation payInfo) {
+		sql = "UPDATE BUYER "
+			+ "SET PAYMENT=?, "
+			+ "TYPE=? WHERE USERNAME=?";
+			try {
+				statement = con.prepareStatement(sql);
+				statement.setInt(1, payInfo.getCardNumber());
+				statement.setString(2, payInfo.getCardType());
+				statement.setString(3, username);
+				statement.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public Account getAccount(Buyer buyer) {
+		sql = "SELECT * FROM BUYER WHERE USERNAME=?";
+		try {
+			statement = con.prepareStatement(sql);
+			statement.setString(1, buyer.getUsername());
+			rs = statement.executeQuery();
+			
+			if (rs.next()) {
+				return new Account(new ShoppingCart(null), 
+								   new Subscription(rs.getBoolean("subscription")), 
+								   new PaymentInformation(rs.getString("type"), rs.getInt("payment")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public static void main(String[] args) {
 		ArrayList<Publication> results;
 		DatabaseHelper dbh = new DatabaseHelper();
-		results = dbh.getPromotions();		
-		Inventory inv = new Inventory(results);
-		for (int i = 0; i < results.size(); i++) {
-			System.out.println(inv.getPublications().get(i).getId());
-			System.out.println(inv.getPublications().get(i).getTitle());
-			System.out.println(inv.getPublications().get(i).getCopies());
-			System.out.println();
-		}
+//		ShoppingCart cart = new ShoppingCart(dbh.getPromotions());
+//		dbh.checkOut(cart);
+		Buyer b = new Buyer("buyer1", 'o');
+		System.out.println(dbh.getAccount(b).getPayInfo().getCardType());
+		System.out.println(dbh.getAccount(b).getPayInfo().getCardNumber());
+		System.out.println(dbh.getAccount(b).getSubscription().isValid());
 		System.out.println("done");
 	}
 }
