@@ -5,10 +5,18 @@ import back_end.Publication;
 
 public class ShoppingCart 
 {
-	private ArrayList<Publication> inCart;
+	private ArrayList<Publication> cart;
 	
-	public ShoppingCart(ArrayList<Publication> inCart)
+	public ShoppingCart(ArrayList<Publication> items)
 	{
-		this.inCart = inCart;
+		this.setCart(items);
+	}
+
+	public ArrayList<Publication> getCart() {
+		return cart;
+	}
+
+	public void setCart(ArrayList<Publication> cart) {
+		this.cart = cart;
 	}
 }

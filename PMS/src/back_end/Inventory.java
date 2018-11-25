@@ -8,6 +8,14 @@ public class Inventory
 	
 	public Inventory(ArrayList<Publication> publications)
 	{
+		this.setPublications(publications);
+	}
+
+	public ArrayList<Publication> getPublications() {
+		return publications;
+	}
+
+	public void setPublications(ArrayList<Publication> publications) {
 		this.publications = publications;
 	}
 }
