@@ -1,8 +1,13 @@
 package back_end;
 
-public class Promotion 
+import java.io.Serializable;
+
+public class Promotion implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("unused")
 	private String documentName;
+	@SuppressWarnings("unused")
 	private String authorName;
 	private Publication publication;
 	
@@ -12,13 +17,12 @@ public class Promotion
 		this.authorName = authorName;
 	}
 	
-	public Promotion(int id, int IBSN, String title, String author, int copies)
+	public Promotion(Publication pub)
 	{
-		this.publication.setId(id);
-		this.publication.setIBSN(IBSN);
-		this.publication.setTitle(title);
-		this.publication.setAuthor(author);
-		this.publication.setCopies(copies);
+		this.publication = pub;
+		//this.publication.setIBSN(IBSN);
+		//this.publication.setTitle(title);
+		//this.publication.setAuthor(author);
 	}
 
 	public Publication getPublication() {

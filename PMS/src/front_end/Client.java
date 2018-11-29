@@ -3,11 +3,9 @@ package front_end;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
-
 import back_end.Store;
-import control.Control;
-import control.OperatorControl;
 import data.Account;
 import data.Message;
 import users.Buyer;
@@ -17,66 +15,63 @@ import views.BuyerView;
 import views.LoginView;
 import views.OperatorView;
 
-public class Client {
-	
+public class Client implements Serializable{
+	private static final long serialVersionUID = 1L;
 	Socket socket;
 	public ObjectInputStream in;
 	public ObjectOutputStream out;
 	
-	public Client(String serverName, int portNum)
-	{
-		try
-		{
+	public Client(String serverName, int portNum){
+		try{
 			socket = new Socket(serverName, portNum);
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
 		}
-		catch(IOException e)
-		{
-			System.err.println(e.getStackTrace());
-		}	
+		catch(IOException e){System.err.println(e.getStackTrace());}	
 	}
 	
-	public boolean login(Message username, Message password) throws ClassNotFoundException, IOException
-	{
+	public boolean login(Message username, Message password) throws ClassNotFoundException, IOException{
 		User user = null;
-		Control control = null;
 		Message message = new Message("login");
 		Store store = null;
-		try 
-		{
-			store = (Store)in.readObject();
+		try {
 			out.writeObject(message);
 			out.writeObject(username);
 			out.writeObject(password);
 			user = (User)in.readObject();
+			if(user == null)
+				return false;
+			store = (Store)in.readObject();
 		} 
 		catch (IOException e) {e.printStackTrace();}
-		
-		if(user == null)
-			return false;
-		if(user.getType() == 'o') //Setup Operator
-		{
-			out.writeObject(user);
+		if(user.getType() == 'o') { //Setup Operator
 			user = new Operator(user.getUsername(), user.getType());
-			((Operator) user).setView(new OperatorView(this));
+			((Operator) user).setStore(store);
+			((Operator) user).setView(new OperatorView(this, (Operator)user));
 		}
-		else if(user.getType() == 'b') //Setup buyer
-		{
-			out.writeObject(user);
+		else if(user.getType() == 'b'){ //Setup buyer
 			user = new Buyer(user.getUsername(), user.getType());
-			((Buyer) user).setView(new BuyerView(this));
 			((Buyer) user).setStore(store);
 			message = new Message("getAccount");
+			out.writeObject(message);
+			out.writeObject(new Message(user.getUsername()));
 			Account account = (Account)in.readObject();
 			((Buyer) user).setAccount(account);
+			((Buyer) user).setView(new BuyerView(this, (Buyer)user));
 		}
 		return true;
 	}
 	
-	public static void main(String[] args)
-	{
+	public void closeConnection(){
+		try {
+			socket.close();
+			System.exit(1);
+		} catch (IOException e) {e.printStackTrace();}
+	}
+	
+	public static void main(String[] args){
 		Client client = new Client("localhost", 8099);
+		@SuppressWarnings("unused")
 		View view = new LoginView(client);
 	}
 }

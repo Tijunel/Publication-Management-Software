@@ -1,49 +1,18 @@
 package model;
 
-import java.util.ArrayList;
-
-import back_end.Publication;
 import control.Control;
 import data.Account;
 import data.PaymentInformation;
 import data.ShoppingCart;
 import data.Subscription;
-import users.Buyer;
 
-public class BuyerModel extends Model
-{
-	Account account;
+public class BuyerModel extends Model{
 	
-	public BuyerModel(Control control) 
-	{
+	public BuyerModel(Control control) {
 		super(control);
-		//make account here
-}
-	
-	public Publication search(String name)
-	{
-		sql = "SELECT * FROM DOCUMENTS WHERE NAME=?";
-		try {
-			statement = con.prepareStatement(sql);
-			statement.setString(1, name);
-			rs = statement.executeQuery();
-			
-			if (rs.next())
-				return new Publication(rs.getInt("id"), rs.getInt("isbn"), rs.getString("name"), rs.getString("author"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
-	public void addToCart(Publication publication) //Does not require sql code
-	{
-		//move this over to the client side
-		//Insert SQL Code
-	}
-	
-	public void checkOut(ShoppingCart cart) //this only updates the database, we will need to update the store as well when this message is sent
-	{
+	public void checkOut(ShoppingCart cart) { //this only updates the database, we will need to update the store as well when this message is sent
 		sql = "UPDATE DOCUMENTS SET COPIES=? WHERE ID=?";
 		try {
 			statement = con.prepareStatement(sql);
@@ -57,8 +26,7 @@ public class BuyerModel extends Model
 		}
 	}
 	
-	public Subscription subscribe(String username)
-	{
+	public Subscription subscribe(String username){
 		sql = "UPDATE BUYER SET SUBSCRIPTION=1 WHERE USERNAME=?";
 		try {
 			statement = con.prepareStatement(sql);
@@ -70,8 +38,7 @@ public class BuyerModel extends Model
 		return new Subscription(true);
 	}
 	
-	public Subscription unSubscribe(String username)
-	{
+	public Subscription unSubscribe(String username){
 		sql = "UPDATE BUYER SET SUBSCRIPTION=0 WHERE USERNAME=?";
 		try {
 			statement = con.prepareStatement(sql);
@@ -83,8 +50,7 @@ public class BuyerModel extends Model
 		return new Subscription(false);
 	}
 	
-	public void addPaymentInfo(String username, PaymentInformation payInfo)
-	{
+	public void addPaymentInfo(String username, PaymentInformation payInfo){
 		sql = "UPDATE BUYER "
 				+ "SET PAYMENT=?, "
 				+ "TYPE=? WHERE USERNAME=?";
@@ -99,22 +65,18 @@ public class BuyerModel extends Model
 		}
 	}
 
-	public Account getAccount(Buyer buyer) //pulls account from database
-	{
+	public Account getAccount(String username) { //pulls account from database{
 		sql = "SELECT * FROM BUYER WHERE USERNAME=?";
 		try {
 			statement = con.prepareStatement(sql);
-			statement.setString(1, buyer.getUsername());
+			statement.setString(1, username);
 			rs = statement.executeQuery();
 			
 			if (rs.next()) {
-				return new Account(new ShoppingCart(null), 
-								   new Subscription(rs.getBoolean("subscription")), 
+				return new Account(new Subscription(rs.getBoolean("subscription")), 
 								   new PaymentInformation(rs.getString("type"), rs.getInt("payment")));
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {e.printStackTrace();}
 		return null;
 	}
 }

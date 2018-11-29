@@ -7,8 +7,7 @@ import java.sql.ResultSet;
 
 import control.Control;
 
-public abstract class Model 
-{
+public abstract class Model {
 	String url = "jdbc:mysql://localhost:3306";
 	String user = "root";
 	String password = "";
@@ -16,11 +15,10 @@ public abstract class Model
 	Connection con;
 	PreparedStatement statement;
 	ResultSet rs;
-	
+	@SuppressWarnings("unused")
 	private Control control;
 	
-	public Model(Control control)
-	{
+	public Model(Control control){
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection(url, user, password);

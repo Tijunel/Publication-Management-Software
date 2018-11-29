@@ -1,7 +1,9 @@
 package back_end;
 
-public class Publication //==Document
-{
+import java.io.Serializable;
+
+public class Publication implements Serializable{ //==Document
+	private static final long serialVersionUID = 1L;
 	private int IBSN;
 	private int id;
 	private int copies;
@@ -9,24 +11,12 @@ public class Publication //==Document
 	private String author;
 	private String path;
 	
-	public Publication(int IBSN, String title, String author)
-	{
+	public Publication(int IBSN, String title, String author){
 		this.setIBSN(IBSN);
 		this.setTitle(title);
 		this.setAuthor(author);
 	}
-	
-	public Publication(int id, int IBSN, String title, String author)
-	{
-		this.setId(id);
-		this.setIBSN(IBSN);
-		this.setTitle(title);
-		this.setAuthor(author);
-	}
-	
-	public Publication(int id, int IBSN, String title, String author, int copies)
-	{
-		this.setId(id);
+	public Publication(int IBSN, String title, String author, int copies){
 		this.setIBSN(IBSN);
 		this.setTitle(title);
 		this.setAuthor(author);

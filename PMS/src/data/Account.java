@@ -1,14 +1,15 @@
 package data;
 
-public class Account 
-{
+import java.io.Serializable;
+
+public class Account implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private ShoppingCart cart;
 	private Subscription subscription;
 	private PaymentInformation payInfo;
 	
-	public Account(ShoppingCart cart, Subscription subscription, PaymentInformation payInfo)
-	{
-		this.setCart(cart);
+	public Account(Subscription subscription, PaymentInformation payInfo){
+		cart = new ShoppingCart();
 		this.setSubscription(subscription);
 		this.setPayInfo(payInfo);
 	}

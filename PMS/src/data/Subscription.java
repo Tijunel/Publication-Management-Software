@@ -1,11 +1,12 @@
 package data;
 
-public class Subscription 
-{
+import java.io.Serializable;
+
+public class Subscription implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private boolean valid;
 	
-	public Subscription(boolean valid)
-	{
+	public Subscription(boolean valid){
 		this.setValid(valid);
 	}
 

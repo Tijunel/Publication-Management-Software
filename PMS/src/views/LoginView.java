@@ -7,31 +7,22 @@ import data.Message;
 import front_end.Client;
 import front_end.View;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 
 public class LoginView extends View {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUsername;
 	private JTextField txtPassword;
 	private JButton btnLogin;
 
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the frame.
-	 */
 	public LoginView(Client client) {
 		
 		this.client = client;
@@ -81,29 +72,26 @@ public class LoginView extends View {
 		btnLogin.addActionListener(l);
 	}
 	
-	class Listener implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e) 
-		{
-			if(e.getSource() == btnLogin)
-			{
+	class Listener implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == btnLogin){
 				try {
-					System.out.println("Alive");
 					boolean loggedIn = client.login(new Message(txtUsername.getText()), new Message(txtPassword.getText()));
-					if(loggedIn)
-					{
-						//remove panel
+					if(loggedIn){
+						contentPane.setVisible(false);
+						setVisible(false);
+						dispose();
 					}
-					else
-					{
-						//pop up
+					else{
+						JOptionPane optionPane = new JOptionPane("Email or password was entered incorrectly.", JOptionPane.ERROR_MESSAGE);    
+						JDialog dialog = optionPane.createDialog("Email or password was entered incorrectly.");
+						dialog.setVisible(true);
+						txtUsername.setText("");
+						txtPassword.setText("");
 					}
-				} catch (ClassNotFoundException | IOException e1) {
-					e1.printStackTrace();
-				}
+				} catch (ClassNotFoundException | IOException e1) {e1.printStackTrace();}
+				return;
 			}
-			
 		}
-		
 	}
 }
